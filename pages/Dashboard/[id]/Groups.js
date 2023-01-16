@@ -25,7 +25,7 @@ const [list,setlist] = useState([])
           .get(`http://localhost:3000/api/users?uid=${session?.user?.id}`)
           .then((resp) => {
             setuser(resp.data.data)
-           
+           setlist([])
 
 
           });
@@ -33,16 +33,16 @@ const [list,setlist] = useState([])
  useEffect(()=>{
                     
 
-setlist([]);
+
 user?.friends.map((friend) => {
   axios
     .get(`http://localhost:3000/api/users/addfriend?code=${friend.code}`)
     .then((resp) => {
-      list?.push(resp.data.data)
+      list.push(resp.data.data)
       console.log(resp.data.data)
     });
 });
-      },[user?.friends])
+      },[user])
 console.log(list)
     const[newtrans,setNewTrans] = useState(false)
     const handleclick =()=>{
@@ -131,7 +131,7 @@ console.log(list)
                       {friend?.code}
                     </th>
                     <td class="px-6 py-4">{friend?.name}</td>
-                    {/* {/* <td class="px-6 py-4">{friend?.name}</td> */}
+                   
                     <td class="px-6 py-4">{friend?.email}</td>
                   </tr>
                 ))}
