@@ -1,14 +1,34 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Modal({handleclick,id}) {
 const today = new Date()
+
+const [user, setUser] = useState();
+const[options,setOptions]=useState([])
+useEffect(() => {
+  
+    axios
+      .get(`http://localhost:3000/api/users?uid=${id}`)
+      .then((resp) => {
+        setUser(resp.data.data);
+      
+  //       setOptions([])
+  //       user?.categories?.map((category)=>{
+  //         console.log(category.name)
+  // options.push(category.name)
+  //       })
+      });
+  }
+, [id]);
     const [name,setName] = useState("")
     const [details, setdetails] = useState("");
-    const [amount,setAmount] = useState("")
+    const [amount,setAmount] = useState(0)
     const [date,setDate]  = useState(new Date())
     const [category,setCategory] = useState("")
-    const [options,setoptions] = useState(["one","two","three"])
+    
+    const [types, setTypes] = useState(["spend", "earned"]);
+    const [type,setType] = useState("")
     const handlesubmit = (e)=>{
         e.preventDefault()
         const databody = {
@@ -16,8 +36,53 @@ const today = new Date()
          amount :  amount,
          Date  :  date,
          details :  details,
-         category : category
+         category : category,
+         type : type
         };
+        if(type=="spend"){
+          const changespend = parseInt(parseInt(user?.totalspend) + parseInt(amount))
+          const changetotal = parseInt(parseInt(user?.totalmoney) - parseInt(amount))
+
+           axios
+             .post(
+               ` http://localhost:3000/api/transactions/spend?uid=${id}`,
+               {totalspend :changespend}
+             )
+             .then(function (response) {
+               console.log(response);
+             });
+              axios
+                .post(
+                  ` http://localhost:3000/api/transactions/total?uid=${id}`,
+                  { totalmoney: changetotal }
+                )
+                .then(function (response) {
+                  console.log(response);
+                });
+        
+        }
+         if (type == "earned") {
+          console.log(user?.totalmoney)
+           const changespend = parseInt(parseInt(user?.totalearned) + parseInt(amount));
+           const changetotal = parseInt(parseInt(user?.totalmoney) + parseInt(amount));
+
+           axios
+             .post(
+               ` http://localhost:3000/api/transactions/earn?uid=${id}`,
+               {totalearned :changespend}
+             )
+             .then(function (response) {
+               console.log(response);
+             });
+           axios
+             .post(
+               ` http://localhost:3000/api/transactions/total?uid=${id}`,
+              {totalmoney :changetotal}
+             )
+             .then(function (response) {
+               console.log(response);
+             });
+         }
         axios
           .post(
             ` http://localhost:3000/api/transactions?uid=${id}`,
@@ -29,7 +94,6 @@ const today = new Date()
 
           handleclick()
     }
-    console.log(date)
   return (
     <div>
       {/* <!-- Modal toggle --> */}
@@ -145,12 +209,31 @@ const today = new Date()
                     Category
                   </label>
                   <select
-                    onChange={(e)=>setCategory(e.target.value)}
+                    onChange={(e) => setCategory(e.target.value)}
                     id="category"
                     class="bg-teal-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option>Please choose one option</option>
-                    {options.map((option, index) => {
+                    {user?.categories.map((option, index) => {
+                      return <option key={index}>{option.name}</option>;
+                    })}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    for="category"
+                    class="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Type
+                  </label>
+                  <select
+                    onChange={(e) => setType(e.target.value)}
+                    id="category"
+                    class="bg-teal-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  >
+                    <option>Please choose one option</option>
+                    {types.map((option, index) => {
                       return <option key={index}>{option}</option>;
                     })}
                   </select>

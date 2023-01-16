@@ -3,15 +3,18 @@ import mongoose, { model, models, Schema } from "mongoose";
 const GroupSchema = new Schema({
   name: {
     type: String,
-    required: true,
+
+  },
+  each_payee : {
+    type : String
   },
   group_id: {
     type: String,
-    required: true,
+
   },
-  total_amount : {
-    type : Number,
-    required : true
+  total_amount: {
+    type: Number,
+    
   },
   createdby: {
     name: {
@@ -21,22 +24,27 @@ const GroupSchema = new Schema({
       type: String,
     },
   },
+  category : {type : String},
+ 
   paidby: {
-    type: String,
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
   },
   members: [
     {
-      name: {
+      membername: {
         type: String,
       },
-      email: {
+      memberemail: {
         type: String,
       },
-      amount : {
-        type : String
-      }
+    
     },
   ],
 });
-const Groups = models?.Groups || model("Groups", UserSchema);
+const Groups = models?.Groups || model("Groups", GroupSchema);
 export default Groups;

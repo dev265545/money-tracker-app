@@ -13,24 +13,38 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  code : {
-    type : String
+  code: {
+    type: String,
   },
   photo_url: {
     type: String,
   },
-  friends : [{
-    code : {
-      type : String
-    }
-  }],
+  friends: [
+    {
+      code: {
+        type: String,
+      },
+    },
+  ],
+  totalmoney: {
+    type: Number,
+  },
+  totalspend: {
+    type: Number,
+  },
+  totalearned: {
+    type: Number,
+  },
+  groups : [{ code : {type : String}}],
+  categories: [{ name: { type: String } }],
   transactions: [
     {
       category: { type: String },
-      amount:{ type:  Number},
-      Date:{ type:  Date},
-      name : {type : String},
+      amount: { type: Number },
+      Date: { type: Date },
+      name: { type: String },
       details: { type: String },
+      type: { type: String },
     },
   ],
 });

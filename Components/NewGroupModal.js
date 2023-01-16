@@ -1,30 +1,42 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { v4 as uuid} from "uuid";
 
 function NewGroupModal({ handleclick, id }) {
   const today = new Date();
+  
+const [user, setUser] = useState();
+useEffect(() => {
+  axios.get(`http://localhost:3000/api/users?uid=${id}`).then((resp) => {
+    setUser(resp.data.data);
+  });
+}, [id]);
   const [name, setName] = useState("");
   const [details, setdetails] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
-  const [options, setoptions] = useState(["one", "two", "three"]);
+  const [creator,setcreator] = useState("")
+  const [ creatoremail,setcreatoremail]=useState("")
+  const [Payee,setpayee] = useState("")
+  const [payeeemail,setpayeeemail]= useState("")
+  const uniqueid = uuid().slice(0,5)
   const handlesubmit = (e) => {
     e.preventDefault();
     const databody = {
+      group_id : uniqueid,
       name: name,
-      createdby : creator,
-      group_members : [{
+      each_payee : memberamount,
+      createdby : { name :creator,email : creatoremail},
+      members : list,
+     total_amount: amount,
+      paidby : {name : Payee, email : payeeemail},
 
-      }],
-      amount: amount,
-      paidby : payee,
-      Date: date,
-      details: details,
+      // details: details,
       category: category,
     };
     axios
-      .post(` http://localhost:3000/api/transactions?uid=${id}`, databody)
+      .post(` http://localhost:3000/api/group`, databody)
       .then(function (response) {
         console.log(response);
       });
@@ -37,19 +49,20 @@ function NewGroupModal({ handleclick, id }) {
   const [number,setnumber]= useState(0)
   const[membername,setmembername]=useState("")
   const [memberemail, setmemberemail] = useState("");
-    const [memberamount, setmemberamount] = useState(amount/number);
+    const [memberamount, setmemberamount] = useState(amount/(number+1));
     useEffect(()=>{
         setmemberamount(amount/number)
     },[number,amount])
     const[list,setlist]=useState([])
   const newmemberclick = ()=>{
-    setnumber(number +1);
+       setnumber(number + 1);
     console.log(number)
     const body = {
         membername : membername,
         memberemail : memberemail,
       
     }
+ 
     console.log(membername)
     list.push(body)
     console.log(body)
@@ -71,10 +84,29 @@ function NewGroupModal({ handleclick, id }) {
       >
         <div class="relative w-full h-full max-w-7xl md:h-auto">
           <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+            <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 gap-20 dark:border-gray-600">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                 New Group Bill Split
               </h3>
+              <button
+                onClick={(e) => handlesubmit(e)}
+                type="submit"
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              >
+                <svg
+                  class="mr-1 -ml-1 w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Add New Group
+              </button>
               <button
                 onClick={() => {
                   handleclick();
@@ -151,6 +183,8 @@ function NewGroupModal({ handleclick, id }) {
                       Group Name
                     </label>
                     <input
+                    value={name}
+                    onChange={(e)=>{setName(e.target.value)}}
                       type="text"
                       name="name"
                       id="name"
@@ -220,14 +254,14 @@ function NewGroupModal({ handleclick, id }) {
                       Category
                     </label>
                     <select
+                      onChange={(e) => setCategory(e.target.value)}
                       id="category"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      class="bg-gray-900 border border-gray-300 text-white text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
-                      <option selected="">Select category</option>
-                      <option value="TV">TV/Monitors</option>
-                      <option value="PC">PC</option>
-                      <option value="GA">Gaming/Console</option>
-                      <option value="PH">Phones</option>
+                      <option>Please choose one option</option>
+                      {user?.categories.map((option, index) => {
+                        return <option key={index}>{option.name}</option>;
+                      })}
                     </select>
                   </div>
                   <div class="sm:col-span-2">

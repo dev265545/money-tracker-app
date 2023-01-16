@@ -9,6 +9,7 @@ import Modal from "../../../Components/Modal";
 import Navbar from "../../../Components/Navbar";
 import {BsChevronCompactDown} from "react-icons/bs"
 import { BiPlusCircle } from "react-icons/bi";
+import AddCategory from "../../../Components/AddCategroy";
 
 function UserDashboard() {
     const router =  useRouter()
@@ -30,16 +31,56 @@ function UserDashboard() {
       }, [session?.user?.id]);
       console.log(user)
     const[newtrans,setNewTrans] = useState(false)
+     const [newcategory, setNewCateogry] = useState(false);
     const handleclick =()=>{
           setNewTrans(!newtrans)
     }
+    const handleclickcategory = () => {
+      setNewCateogry(!newcategory);
+    };
   return (
     <div>
       <div class="min-h-screen bg-green-100 flex flex-row  ">
         <Navbar className="bg-white" />
         <div className="p-20 mt-20 pt-20">
           <div className="">
-            <div className="text-3xl text-gray-600">Transactions</div>
+            <div className=" grid grid-cols-2  gap-10">
+              <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <button
+                  className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  <BiPlusCircle
+                    onClick={(e) => {
+                      setNewTrans(true);
+                    }}
+                    className="text-4xl   rounded-full "
+                  ></BiPlusCircle>
+                </button>{" "}
+                <div className="text-white font-bold text-4xl">
+                  New Transaction
+                </div>
+              </div>
+              <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <button
+                  className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  <BiPlusCircle
+                    onClick={(e) => {
+                      setNewCateogry(true);
+                    }}
+                    className="text-4xl   rounded-full "
+                  ></BiPlusCircle>
+                </button>{" "}
+                <div className="text-white font-bold text-4xl">
+                  Add Category
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 font-semibold text-3xl text-gray-600">
+              Transactions
+            </div>
             <div className="w-full flex justify-center items-center flex-col">
               {user?.transactions?.map((transaction, index) => (
                 <div key={index} className="w-full">
@@ -69,24 +110,10 @@ function UserDashboard() {
               ))}
             </div>
           </div>
-
-          <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <button
-              className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
-              type="button"
-            >
-              <BiPlusCircle
-                onClick={(e) => {
-                  setNewTrans(true);
-                }}
-                className="text-4xl   rounded-full "
-              ></BiPlusCircle>
-            </button>{" "}
-            <div className="text-white font-bold text-4xl">New Transaction</div>
-          </div>
         </div>
       </div>
       {newtrans && <Modal handleclick={handleclick} id={id} />}
+      {newcategory && <AddCategory handleclick={handleclickcategory} id={id} />}
     </div>
   );
 }

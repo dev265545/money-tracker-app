@@ -5,10 +5,12 @@ import NewGroupModal from '../../../Components/NewGroupModal';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import axios from 'axios';
+import{ Image }from "next/image"
 import logo from "../../../public/image.svg"
-import Image from 'next/image';
+
 function Groups() {
   const router =  useRouter()
+const [list,setlist] = useState([])
     const [showmore,setShowMore] = useState(false)
 
      const { id } = router.query;
@@ -16,17 +18,32 @@ function Groups() {
       const { data: session } = useSession();
 
       const [user, setuser] = useState();
-      const [transactions,settransactions] = useState([])
+      
       const [addfriend,setAddFriend] = useState(false)
       useEffect(() => {
         axios
           .get(`http://localhost:3000/api/users?uid=${session?.user?.id}`)
           .then((resp) => {
             setuser(resp.data.data)
-            settransactions(user?.transactions)
+           
+
+
           });
-      }, [session?.user?.id,user]);
-      console.log(user)
+      }, [session?.user?.id]);
+ useEffect(()=>{
+                    
+
+setlist([]);
+user?.friends.map((friend) => {
+  axios
+    .get(`http://localhost:3000/api/users/addfriend?code=${friend.code}`)
+    .then((resp) => {
+      list?.push(resp.data.data)
+      console.log(resp.data.data)
+    });
+});
+      },[user?.friends])
+console.log(list)
     const[newtrans,setNewTrans] = useState(false)
     const handleclick =()=>{
           setNewTrans(!newtrans)}
@@ -46,7 +63,8 @@ function Groups() {
       console.log(response);
     });
    setCode("")
-  };   
+  };  
+
   return (
     <div>
       <div class="min-h-screen bg-green-100 flex flex-row  ">
@@ -86,6 +104,41 @@ function Groups() {
 
           <div></div>
         </div>
+        <div className="flex flex-col justify-start items-center  bg-slate-800 rounded-xl ">
+          <div className="p-6 text-white font-semibold text-3xl">Friends</div>
+          <div class="relative overflow-x-auto p-10  mt-10 pt-11  flex   items-start justify-start ">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3">
+                    Code
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Name
+                  </th>
+                  <th scope="col" class="px-6 py-3">
+                    Email
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {list?.map((friend, index) => (
+                  <tr key={index} class="bg-white dark:bg-gray-800">
+                    <th
+                      scope="row"
+                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {friend?.code}
+                    </th>
+                    <td class="px-6 py-4">{friend?.name}</td>
+                    {/* {/* <td class="px-6 py-4">{friend?.name}</td> */}
+                    <td class="px-6 py-4">{friend?.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
       {newtrans && (
         <div className="flex items-center justify-center">
@@ -120,7 +173,7 @@ function Groups() {
                   ></button>
                 </div>
                 <div class="modal-body relative p-4">
-                  <div className='flex flex-col items-center justify-center'>
+                  <div className="flex flex-col items-center justify-center">
                     <Image
                       height={400}
                       width={400}
@@ -129,9 +182,23 @@ function Groups() {
                       src={logo}
                     />
                     <div class="mb-6 flex flex-row ">
-    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Friend Code</label>
-    <input value={code} onChange={(e)=>{setCode(e.target.value)}} type="text" id="large-input" class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-</div>
+                      <label
+                        for="large-input"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        {" "}
+                        Friend Code
+                      </label>
+                      <input
+                        value={code}
+                        onChange={(e) => {
+                          setCode(e.target.value);
+                        }}
+                        type="text"
+                        id="large-input"
+                        class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
@@ -159,7 +226,9 @@ function Groups() {
                     Close
                   </button>
                   <button
-                  onClick={()=>{addTodoHandler()}}
+                    onClick={() => {
+                      addTodoHandler();
+                    }}
                     type="button"
                     class="px-6
       py-2.5
@@ -179,7 +248,7 @@ function Groups() {
       ease-in-out
       ml-1"
                   >
-                  Add
+                    Add
                   </button>
                 </div>
               </div>

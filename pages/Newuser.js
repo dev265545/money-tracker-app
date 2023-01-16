@@ -21,7 +21,9 @@ function NewUserRegistration() {
       uid: session?.user?.id,
       name: name,
       email: session?.user?.email,
-     
+     totalspend : 0,
+     totalmoney : 0,
+     totalearned : 0,
     code: small_id,
      
       photo_url: session?.user?.image,
