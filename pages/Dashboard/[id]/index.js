@@ -1,0 +1,89 @@
+import axios from "axios";
+import moment from "moment";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { GrAddCircle, GrMoney } from "react-icons/gr";
+import Card from "../../../Components/Card";
+import Modal from "../../../Components/Modal";
+import Navbar from "../../../Components/Navbar";
+import {BsChevronCompactDown} from "react-icons/bs"
+
+function UserDashboard() {
+    const router =  useRouter()
+    const [showmore,setShowMore] = useState(false)
+
+     const { id } = router.query;
+     console.log(id)
+      const { data: session } = useSession();
+
+      const [user, setuser] = useState();
+      const [transactions,settransactions] = useState([])
+      useEffect(() => {
+        axios
+          .get(`http://localhost:3000/api/users?uid=${session?.user?.id}`)
+          .then((resp) => {
+            setuser(resp.data.data)
+            settransactions(user?.transactions)
+          });
+      }, [session?.user?.id]);
+      console.log(user)
+    const[newtrans,setNewTrans] = useState(false)
+    const handleclick =()=>{
+          setNewTrans(!newtrans)
+    }
+  return (
+    <div>
+      <div class="min-h-screen bg-green-100 flex flex-row  ">
+        <Navbar className="bg-white" />
+        <div className="p-20 mt-20 pt-20">
+          <div className="">
+            <div className="text-3xl text-gray-600">Transactions</div>
+            <div className="w-full flex justify-center items-center flex-col">
+              {user?.transactions?.map((transaction, index) => (
+                <div key={index} className="w-full">
+                  <div class="flex justify-center p-2 w-full ">
+                    <div class=" p-6 rounded-xl shadow-lg shadow-green-200 bg-green-200 w-full grid grid-cols-3 gap-4  ">
+                      <GrMoney className="text-5xl bg-green-200 m-3 p-1 rounded-full  " />
+                      <h5 class="text-gray-600 text-xl leading-tight font-medium mb-2">
+                        {transaction?.name}
+                        <p class="text-gray-700 text-base mb-4">
+                          {moment(transaction?.Date).format("Do ddd MMM yyyy")}
+                        </p>
+                      </h5>
+                      <div className="flex  justify-end text-xl font-semibold text-gray-600 ">
+                        - Rs. {transaction?.amount}
+                        <div className="flex pr-13  p-5 justify-end text-xl font-semibold text-gray-600 ">
+                          <BsChevronCompactDown key={index} onClick={(e)=>setShowMore(!showmore)} className="text-5xl" />
+                        </div>
+                      </div>
+            {showmore && (<div>hello</div>)}
+                     
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={(e) => {
+              setNewTrans(true);
+            }}
+            type="button"
+            class="text-white text-2xl bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800  rounded-lg p-1  px-5 py-2.5 text-center mr-2 mb-2"
+          >
+            <GrAddCircle
+              style={{ color: "white" }}
+              className=" text-green-100  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-4xl  rounded-full "
+            />
+            Add Transaction
+          </button>
+        </div>
+      </div>
+      {newtrans && <Modal handleclick={handleclick} id={id} />}
+    </div>
+  );
+}
+
+export default UserDashboard;

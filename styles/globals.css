@@ -1,38 +1,15 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.iso-pattern {
+background-color: #000000;
+opacity: 1;
+background-image:  linear-gradient(30deg, #0fd730 12%, transparent 12.5%, transparent 87%, #0fd730 87.5%, #0fd730), linear-gradient(150deg, #0fd730 12%, transparent 12.5%, transparent 87%, #0fd730 87.5%, #0fd730), linear-gradient(30deg, #0fd730 12%, transparent 12.5%, transparent 87%, #0fd730 87.5%, #0fd730), linear-gradient(150deg, #0fd730 12%, transparent 12.5%, transparent 87%, #0fd730 87.5%, #0fd730), linear-gradient(60deg, #0fd73077 25%, transparent 25.5%, transparent 75%, #0fd73077 75%, #0fd73077), linear-gradient(60deg, #0fd73077 25%, transparent 25.5%, transparent 75%, #0fd73077 75%, #0fd73077);
+background-size: 58px 102px;
+background-position: 0 0, 0 0, 29px 51px, 29px 51px, 0 0, 29px 51px;
 }
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-h1,
-h2,
-p,
-ul {
-  margin: 0;
-}
-
-ul {
-  padding: 0;
-  list-style: none;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  font-weight: bold;
+.wavy {
+    background-color: #000000;
+opacity: 1;
+background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #000000 18px ), repeating-linear-gradient( #069eff55, #069eff );
 }
