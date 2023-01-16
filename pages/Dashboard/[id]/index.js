@@ -8,6 +8,7 @@ import Card from "../../../Components/Card";
 import Modal from "../../../Components/Modal";
 import Navbar from "../../../Components/Navbar";
 import {BsChevronCompactDown} from "react-icons/bs"
+import { BiPlusCircle } from "react-icons/bi";
 
 function UserDashboard() {
     const router =  useRouter()
@@ -54,11 +55,14 @@ function UserDashboard() {
                       <div className="flex  justify-end text-xl font-semibold text-gray-600 ">
                         - Rs. {transaction?.amount}
                         <div className="flex pr-13  p-5 justify-end text-xl font-semibold text-gray-600 ">
-                          <BsChevronCompactDown key={index} onClick={(e)=>setShowMore(!showmore)} className="text-5xl" />
+                          <BsChevronCompactDown
+                            key={index}
+                            onClick={(e) => setShowMore(!showmore)}
+                            className="text-5xl"
+                          />
                         </div>
                       </div>
-            {showmore && (<div>hello</div>)}
-                     
+                      {showmore && <div>hello</div>}
                     </div>
                   </div>
                 </div>
@@ -66,19 +70,20 @@ function UserDashboard() {
             </div>
           </div>
 
-          <button
-            onClick={(e) => {
-              setNewTrans(true);
-            }}
-            type="button"
-            class="text-white text-2xl bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800  rounded-lg p-1  px-5 py-2.5 text-center mr-2 mb-2"
-          >
-            <GrAddCircle
-              style={{ color: "white" }}
-              className=" text-green-100  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-4xl  rounded-full "
-            />
-            Add Transaction
-          </button>
+          <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <button
+              className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+              type="button"
+            >
+              <BiPlusCircle
+                onClick={(e) => {
+                  setNewTrans(true);
+                }}
+                className="text-4xl   rounded-full "
+              ></BiPlusCircle>
+            </button>{" "}
+            <div className="text-white font-bold text-4xl">New Transaction</div>
+          </div>
         </div>
       </div>
       {newtrans && <Modal handleclick={handleclick} id={id} />}

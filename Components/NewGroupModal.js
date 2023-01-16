@@ -168,6 +168,10 @@ function NewGroupModal({ handleclick, id }) {
                     </label>
 
                     <input
+                      onChange={(e) => {
+                        setcreator(e.target.value);
+                      }}
+                      value={creator}
                       type="text"
                       name="creator"
                       id="creator"
@@ -176,6 +180,10 @@ function NewGroupModal({ handleclick, id }) {
                       required=""
                     />
                     <input
+                      onChange={(e) => {
+                        setcreatoremail(e.target.value);
+                      }}
+                      value={creatoremail}
                       type="text"
                       name="creatoremail"
                       id="creatoremail"
@@ -230,8 +238,12 @@ function NewGroupModal({ handleclick, id }) {
                       Description
                     </label>
                     <textarea
+                      onChange={(e) => {
+                        setdetails(e.target.value);
+                      }}
                       id="description"
                       rows="4"
+                      value={details}
                       class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Write product description here"
                     ></textarea>
@@ -245,6 +257,10 @@ function NewGroupModal({ handleclick, id }) {
                     </label>
 
                     <input
+                      onChange={(e) => {
+                        setpayee(e.target.value);
+                      }}
+                      value={Payee}
                       type="text"
                       name="Payee"
                       id="Payee"
@@ -253,6 +269,10 @@ function NewGroupModal({ handleclick, id }) {
                       required=""
                     />
                     <input
+                      onChange={(e) => {
+                        setpayeeemail(e.target.value);
+                      }}
+                      value={payeeemail}
                       type="text"
                       name="payeeemail"
                       id="payeeemail"
@@ -316,7 +336,7 @@ function NewGroupModal({ handleclick, id }) {
                       Amount
                     </label>
                     <input
-                    disabled
+                      disabled
                       onChange={(e) => {
                         setmemberamount(e.target.value);
                       }}
@@ -326,7 +346,7 @@ function NewGroupModal({ handleclick, id }) {
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       placeholder="Rs 1400"
                       required=""
-                      value={amount/(number+1)}
+                      value={amount / (number + 1)}
                     />
                   </div>
                   <button
@@ -350,45 +370,38 @@ function NewGroupModal({ handleclick, id }) {
                     </svg>
                     Add new Member
                   </button>
-  <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                          <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                              <th scope="col" class="px-6 py-3 rounded-l-lg">
-                                Member name
-                              </th>
-                              <th scope="col" class="px-6 py-3">
-                                Email Id
-                              </th>
-                              <th scope="col" class="px-6 py-3 rounded-r-lg">
-                                Amount Pay (Shared)
-                              </th>
-                            </tr>
-                          </thead>
-                          
-                          <tbody>
-                  {list.map((member, index) => (
-        
-                    
-                            <tr key={index} class="bg-white dark:bg-gray-800">
-                              <th
-                                scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                              >
-                               {member.membername}
-                              </th>
-                              <td class="px-6 py-4">{member.memberemail}</td>
-                              <td class="px-6 py-4">{memberamount} </td>
-                            </tr>
-                           
-                         
-                          
-                      
-                  
-                  ))}
-                   </tbody>
-                     </table>
-                </div>
+                  <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                          <th scope="col" class="px-6 py-3 rounded-l-lg">
+                            Member name
+                          </th>
+                          <th scope="col" class="px-6 py-3">
+                            Email Id
+                          </th>
+                          <th scope="col" class="px-6 py-3 rounded-r-lg">
+                            Amount Pay (Shared)
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {list.map((member, index) => (
+                          <tr key={index} class="bg-white dark:bg-gray-800">
+                            <th
+                              scope="row"
+                              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {member.membername}
+                            </th>
+                            <td class="px-6 py-4">{member.memberemail}</td>
+                            <td class="px-6 py-4">{memberamount} </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </form>

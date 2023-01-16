@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "../../../util/Models/User";
+import User from "../../../util/models/User";
 import { connectToDatabase, initMongoose } from "../../../util/mongodb";
 export default async function handler(req, res) {
   const {

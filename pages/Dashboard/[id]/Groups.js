@@ -5,7 +5,7 @@ import NewGroupModal from '../../../Components/NewGroupModal';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import axios from 'axios';
-import logo from "/../Users/Dev/Desktop/money-tracker/public/image.svg"
+import logo from "../../../public/image.svg"
 import Image from 'next/image';
 function Groups() {
   const router =  useRouter()
