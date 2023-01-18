@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Group from "../../../util/models/Group";
+import User from "../../../util/models/User";
 import { connectToDatabase, initMongoose } from "../../../util/mongodb";
 export default async function handler(req, res) {
   const {
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   if (method === "GET") {
     try {
-      const user = await Group.findOne({ group_id: uid });
+      const user = await User.findOne({ uid: uid });
       res.json({ status: 200, data: user });
     } catch (err) {
       res.status(500).json(err);
@@ -26,29 +26,29 @@ export default async function handler(req, res) {
   //     res.status(500).json(err);
   //   }
   // }
-  // if (method === "POST") {
-  //   try {
-  //     const order = await PatientUser.updateOne(
-  //       { email: email },
-  //       {
-  //         $setOnInsert: req.body,
-  //       },
-  //       { upsert: true }
-  //     );
-  //     res.status(200).json(order);
-  //   } catch (err) {
-  //     res.status(500).json(err);
-  //   }
-  // }
   if (method === "POST") {
     try {
-      const newUser = new Group(body);
-      const order = await newUser.save();
+      const order = await User.updateOne(
+        { uid: uid },
+        {
+          $push: { groups: req.body },
+        },
+        { upsert: true }
+      );
       res.status(200).json(order);
     } catch (err) {
       res.status(500).json(err);
     }
   }
+  //   if (method === "POST") {
+  //     try {
+  //       const newUser = new User(body);
+  //       const order = await newUser.save();
+  //       res.status(200).json(order);
+  //     } catch (err) {
+  //       res.status(500).json(err);
+  //     }
+  //   }
   // if (method === "PUT") {
   //   try {
   //     const order = await PatientUser.findById(name, req.body, {

@@ -14,18 +14,20 @@ const [list,setlist] = useState([])
     const [showmore,setShowMore] = useState(false)
 
      const { id } = router.query;
-     console.log(id)
+
       const { data: session } = useSession();
 
       const [user, setuser] = useState();
+      const[usergroups,setgroups] = useState([])
       
       const [addfriend,setAddFriend] = useState(false)
       useEffect(() => {
         axios
-          .get(`http://localhost:3000/api/users?uid=${session?.user?.id}`)
+          .get(`http://localhost:3000/api/users?uid=${id}`)
           .then((resp) => {
             setuser(resp.data.data)
            setlist([])
+           setgroups([])
 
 
           });
@@ -43,6 +45,20 @@ user?.friends.map((friend) => {
     });
 });
       },[user])
+
+ useEffect(() => {
+   user?.groups.map((group) => {
+     axios
+       .get(`http://localhost:3000/api/group?code=${group.code}`)
+       .then((resp) => {
+         usergroups.push(resp.data.data);
+         console.log(resp.data.data);
+       });
+   });
+ }, [user]);
+
+
+      
 console.log(list)
     const[newtrans,setNewTrans] = useState(false)
     const handleclick =()=>{
@@ -64,48 +80,15 @@ console.log(list)
     });
    setCode("")
   };  
-
+console.log(user?.groups)
   return (
     <div>
       <div class="min-h-screen bg-green-100 flex flex-row  ">
         <Navbar className="bg-white" />
-
-        <div className="p-20 mt-20 pt-20 grid grid-cols-2 gap-20">
-          <div className="p-4  w-[250px] h-[155px] iso-pattern  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <button
-              className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
-              type="button"
-            >
-              <BiPlusCircle
-                onClick={(e) => {
-                  setNewTrans(true);
-                }}
-                className="text-4xl   rounded-full "
-              ></BiPlusCircle>
-            </button>{" "}
-            <div className="text-white font-bold shaodow-4xl shadow-orange-500 text-4xl">
-              New Group
-            </div>
+        <div className=" top-200 absolute h-full right-0  bg-slate-800   rounded-l-xl ">
+          <div className=" flex justify-center items-center p-6 text-white font-semibold text-3xl">
+            Friends
           </div>
-          <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <button
-              className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
-              type="button"
-            >
-              <BiPlusCircle
-                onClick={(e) => {
-                  setAddFriend(true);
-                }}
-                className="text-4xl   rounded-full "
-              ></BiPlusCircle>
-            </button>{" "}
-            <div className="text-white font-bold text-4xl">Add Friend</div>
-          </div>
-
-          <div></div>
-        </div>
-        <div className="flex flex-col justify-start items-center  bg-slate-800 rounded-xl ">
-          <div className="p-6 text-white font-semibold text-3xl">Friends</div>
           <div class="relative overflow-x-auto p-10  mt-10 pt-11  flex   items-start justify-start ">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead class="text-xs text-gray-900 uppercase dark:text-gray-400">
@@ -131,7 +114,7 @@ console.log(list)
                       {friend?.code}
                     </th>
                     <td class="px-6 py-4">{friend?.name}</td>
-                   
+
                     <td class="px-6 py-4">{friend?.email}</td>
                   </tr>
                 ))}
@@ -139,7 +122,99 @@ console.log(list)
             </table>
           </div>
         </div>
+
+        <div className="p-20 mt-20 pt-20 grid grid-rows-2 gap-20">
+          <div className="grid grid-cols-2 gap-10">
+            <div className="p-4  w-[250px] h-[155px] iso-pattern  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+              <button
+                className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+                type="button"
+              >
+                <BiPlusCircle
+                  onClick={(e) => {
+                    setNewTrans(true);
+                  }}
+                  className="text-4xl   rounded-full "
+                ></BiPlusCircle>
+              </button>{" "}
+              <div className="text-white font-bold shaodow-4xl shadow-orange-500 text-4xl">
+                New Group
+              </div>
+            </div>
+            <div className="p-4  w-[250px] h-[155px] wavy  rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+              <button
+                className=" bg-white  rounded-full font-bold uppercase text-xs p-2  shadow-lg hover:shadow-md outline-none focus:outline-none  ease-linear transition-all duration-150"
+                type="button"
+              >
+                <BiPlusCircle
+                  onClick={(e) => {
+                    setAddFriend(true);
+                  }}
+                  className="text-4xl   rounded-full "
+                ></BiPlusCircle>
+              </button>{" "}
+              <div className="text-white font-bold text-4xl">Add Friend</div>
+            </div>
+            <div className="py-8 w-full grid grid-rows-3">
+              {usergroups.map((group,index) => (
+                <div key={index} className="lg:flex items-center justify-center w-1/2">
+                  <div className="lg:w-4/12 lg:mr-7 lg:mb-0 mb-7 bg-white p-6 shadow rounded">
+                    <div className="flex items-center border-b border-gray-200 pb-6">
+                      {/* <img
+                        src="https://cdn.tuk.dev/assets/components/misc/doge-coin.png"
+                        alt
+                        className="w-12 h-12 rounded-full"
+                      /> */}
+                      <div className="flex items-start justify-between w-full">
+                        <div className="pl-3 w-full">
+                          <p className="text-xl font-medium leading-5 text-gray-800">
+                            {group?.name}
+                          </p>
+                          <p className="text-sm leading-normal pt-2 text-gray-500">
+                            {group?.members?.length}
+                          </p>
+                        </div>
+                        <svg
+                          width={28}
+                          height={28}
+                          viewBox="0 0 28 28"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.5001 4.66667H17.5001C18.1189 4.66667 18.7124 4.9125 19.15 5.35009C19.5876 5.78767 19.8334 6.38117 19.8334 7V23.3333L14.0001 19.8333L8.16675 23.3333V7C8.16675 6.38117 8.41258 5.78767 8.85017 5.35009C9.28775 4.9125 9.88124 4.66667 10.5001 4.66667Z"
+                            stroke="#2C3E50"
+                            strokeWidth="1.25"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="px-2">
+                      <p className="text-sm leading-5 py-4 text-gray-600">
+                        A group of people interested in dogecoin, the currency
+                        and a bit of side for the meme and dof that we all know
+                        and love. These cases are perfectly simple and easy to
+                        distinguish.
+                      </p>
+                      <div className="flex">
+                        <div className="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">
+                          #dogecoin
+                        </div>
+                        <div className="py-2 px-4 ml-3 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">
+                          #crypto
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
+
       {newtrans && (
         <div className="flex items-center justify-center">
           <NewGroupModal handleclick={handleclick} id={id} />

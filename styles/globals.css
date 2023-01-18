@@ -13,3 +13,17 @@ background-position: 0 0, 0 0, 29px 51px, 29px 51px, 0 0, 29px 51px;
 opacity: 1;
 background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #000000 18px ), repeating-linear-gradient( #069eff55, #069eff );
 }
+.logo{
+background-color: #00ffff;
+opacity: 1;
+background-image: radial-gradient(circle at center center, #000000, #00ffff), repeating-radial-gradient(circle at center center, #000000, #000000, 24px, transparent 48px, transparent 24px);
+background-blend-mode: multiply;
+}
+.container {
+  margin-top:3rem;
+  max-width:40% !important;
+}
+
+.bg-cyan-900	{
+  background-color: rgb(22 78 99);	
+}

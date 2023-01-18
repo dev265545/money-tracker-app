@@ -40,7 +40,21 @@ useEffect(() => {
       .then(function (response) {
         console.log(response);
       });
-
+//  axios
+//    .post(` http://localhost:3000/api/users/groupjoin?uid=${uid}`,uniqueid)
+//    .then(function (response) {
+//      console.log(response);
+//    });
+list.map((member,index)=>{
+  const databody = {
+    code : uniqueid
+  }
+  axios
+    .post(` http://localhost:3000/api/users/findbyemail?email=${member?.memberemail}`, databody)
+    .then(function (response) {
+      console.log(response);
+    });
+})
     handleclick();
   };
   console.log(date);
