@@ -7,7 +7,7 @@ function NewGroupModal({ handleclick, id }) {
   
 const [user, setUser] = useState();
 useEffect(() => {
-  axios.get(`http://localhost:3000/api/users?uid=${id}`).then((resp) => {
+  axios.get(`https://money-tracker-app.vercel.app/api/users?uid=${id}`).then((resp) => {
     setUser(resp.data.data);
   });
 }, [id]);
@@ -36,12 +36,12 @@ useEffect(() => {
       category: category,
     };
     axios
-      .post(` http://localhost:3000/api/group`, databody)
+      .post(` https://money-tracker-app.vercel.app/api/group`, databody)
       .then(function (response) {
         console.log(response);
       });
 //  axios
-//    .post(` http://localhost:3000/api/users/groupjoin?uid=${uid}`,uniqueid)
+//    .post(` https://money-tracker-app.vercel.app/api/users/groupjoin?uid=${uid}`,uniqueid)
 //    .then(function (response) {
 //      console.log(response);
 //    });
@@ -50,7 +50,7 @@ list.map((member,index)=>{
     code : uniqueid
   }
   axios
-    .post(` http://localhost:3000/api/users/findbyemail?email=${member?.memberemail}`, databody)
+    .post(` https://money-tracker-app.vercel.app/api/users/findbyemail?email=${member?.memberemail}`, databody)
     .then(function (response) {
       console.log(response);
     });

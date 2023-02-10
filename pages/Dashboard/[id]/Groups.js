@@ -24,7 +24,7 @@ const [list,setlist] = useState([])
       const [addfriend,setAddFriend] = useState(false)
       useEffect(() => {
         axios
-          .get(`http://localhost:3000/api/users?uid=${id}`)
+          .get(`https://money-tracker-app.vercel.app/api/users?uid=${id}`)
           .then((resp) => {
             setuser(resp.data.data)
            setlist([])
@@ -39,7 +39,7 @@ const [list,setlist] = useState([])
 
 user?.friends.map((friend) => {
   axios
-    .get(`http://localhost:3000/api/users/addfriend?code=${friend.code}`)
+    .get(`https://money-tracker-app.vercel.app/api/users/addfriend?code=${friend.code}`)
     .then((resp) => {
        const data = resp.data.data;
        setlist((old) => [...old, data]);
@@ -50,7 +50,7 @@ user?.friends.map((friend) => {
  useEffect(() => {
    user?.groups.map((group) => {
      axios
-       .get(`http://localhost:3000/api/group?group_id=${group.code}`)
+       .get(`https://money-tracker-app.vercel.app/api/group?group_id=${group.code}`)
        .then((resp) => {
          console.log(resp.data.data);
          const data = resp.data.data

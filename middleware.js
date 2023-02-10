@@ -11,7 +11,7 @@ export async function middleware(req) {
     // You could also for any property on the session object,
     // like role === "admin" or name === "John Doe", etc.
     if (!session)
-      return NextResponse.redirect("http://localhost:3000/login");
+      return NextResponse.redirect("https://money-tracker-app.vercel.app/login");
     // If user is authenticated, continue.
   }
 }

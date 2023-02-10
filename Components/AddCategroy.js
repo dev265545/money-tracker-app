@@ -9,7 +9,7 @@ function AddCategory({ handleclick, id }) {
     e.preventDefault();
     const databody = { name : category }
     axios
-      .post(` http://localhost:3000/api/category?uid=${id}`, databody)
+      .post(` https://money-tracker-app.vercel.app/api/category?uid=${id}`, databody)
       .then(function (response) {
         console.log(response);
       });

@@ -9,7 +9,7 @@ const[options,setOptions]=useState([])
 useEffect(() => {
   
     axios
-      .get(`http://localhost:3000/api/users?uid=${id}`)
+      .get(`https://money-tracker-app.vercel.app/api/users?uid=${id}`)
       .then((resp) => {
         setUser(resp.data.data);
       
@@ -45,7 +45,7 @@ useEffect(() => {
 
            axios
              .post(
-               ` http://localhost:3000/api/transactions/spend?uid=${id}`,
+               ` https://money-tracker-app.vercel.app/api/transactions/spend?uid=${id}`,
                {totalspend :changespend}
              )
              .then(function (response) {
@@ -53,7 +53,7 @@ useEffect(() => {
              });
               axios
                 .post(
-                  ` http://localhost:3000/api/transactions/total?uid=${id}`,
+                  ` https://money-tracker-app.vercel.app/api/transactions/total?uid=${id}`,
                   { totalmoney: changetotal }
                 )
                 .then(function (response) {
@@ -68,7 +68,7 @@ useEffect(() => {
 
            axios
              .post(
-               ` http://localhost:3000/api/transactions/earn?uid=${id}`,
+               ` https://money-tracker-app.vercel.app/api/transactions/earn?uid=${id}`,
                {totalearned :changespend}
              )
              .then(function (response) {
@@ -76,7 +76,7 @@ useEffect(() => {
              });
            axios
              .post(
-               ` http://localhost:3000/api/transactions/total?uid=${id}`,
+               ` https://money-tracker-app.vercel.app/api/transactions/total?uid=${id}`,
               {totalmoney :changetotal}
              )
              .then(function (response) {
@@ -85,7 +85,7 @@ useEffect(() => {
          }
         axios
           .post(
-            ` http://localhost:3000/api/transactions?uid=${id}`,
+            ` https://money-tracker-app.vercel.app/api/transactions?uid=${id}`,
             databody
           )
           .then(function (response) {

@@ -10,7 +10,7 @@ export default function Home() {
 const [user, setUser] = useState();
 useEffect(() => {
   axios
-    .get(`http://localhost:3000/api/users?uid=${session?.user?.id}`)
+    .get(`https://money-tracker-app.vercel.app/api/users?uid=${session?.user?.id}`)
     .then((resp) => {
       setUser(resp.data.data);
     });
