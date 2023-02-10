@@ -5,14 +5,14 @@ export default async function handler(req, res) {
   const {
     body,
     method,
-    query: { uid },
+    query: { group_id },
   } = req;
   console.log(body);
   await initMongoose();
 
   if (method === "GET") {
     try {
-      const user = await Group.findOne({ group_id: uid });
+      const user = await Group.findOne({ group_id: group_id });
       res.json({ status: 200, data: user });
     } catch (err) {
       res.status(500).json(err);

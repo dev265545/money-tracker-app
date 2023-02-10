@@ -26,20 +26,10 @@ function Dashboard() {
     }
   }, [router, user?.data?.uid]);
 
-  // axios(`https://mediline.vercel.app/api/doctors?uid=${session?.user?.id}`)
-  //   .then((response) => {
-  //     setUser(response.data.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("error");
-  //   });
 
-  // if (user === null) {
-  //   router.push("/NewDoctorRegistration");
-  // }
 
   return (
-    <div className="text-3xl">
+    <div className="text-3xl flex items-center text-center justify-center">
     hello
     </div>
   );

@@ -5,8 +5,9 @@ import NewGroupModal from '../../../Components/NewGroupModal';
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import axios from 'axios';
-import{ Image }from "next/image"
-import logo from "../../../public/image.svg"
+import Image from "next/image"
+import AddFriendModal from '../../../Components/AddFriendModal';
+import { GrGroup } from 'react-icons/gr';
 
 function Groups() {
   const router =  useRouter()
@@ -40,8 +41,8 @@ user?.friends.map((friend) => {
   axios
     .get(`http://localhost:3000/api/users/addfriend?code=${friend.code}`)
     .then((resp) => {
-      list.push(resp.data.data)
-      console.log(resp.data.data)
+       const data = resp.data.data;
+       setlist((old) => [...old, data]);
     });
 });
       },[user])
@@ -49,17 +50,20 @@ user?.friends.map((friend) => {
  useEffect(() => {
    user?.groups.map((group) => {
      axios
-       .get(`http://localhost:3000/api/group?code=${group.code}`)
+       .get(`http://localhost:3000/api/group?group_id=${group.code}`)
        .then((resp) => {
-         usergroups.push(resp.data.data);
          console.log(resp.data.data);
+         const data = resp.data.data
+          setgroups((old) => [...old,data]);
        });
    });
+
  }, [user]);
 
 
       
-console.log(list)
+console.log("list",list)
+console.log("usergroups",usergroups)
     const[newtrans,setNewTrans] = useState(false)
     const handleclick =()=>{
           setNewTrans(!newtrans)}
@@ -155,16 +159,15 @@ console.log(user?.groups)
               </button>{" "}
               <div className="text-white font-bold text-4xl">Add Friend</div>
             </div>
-            <div className="py-8 w-full grid grid-rows-3">
-              {usergroups.map((group,index) => (
-                <div key={index} className="lg:flex items-center justify-center w-1/2">
-                  <div className="lg:w-4/12 lg:mr-7 lg:mb-0 mb-7 bg-white p-6 shadow rounded">
+            <div className="py-8 w-full  flex flex-col gap-3">
+              {usergroups.map((group, index) => (
+                <div
+                  key={index}
+                  className="lg:flex items-center justify-center rounded-xl shadow-2xl shadow-black "
+                >
+                  <div className=" bg-white p-6 shadow rounded">
                     <div className="flex items-center border-b border-gray-200 pb-6">
-                      {/* <img
-                        src="https://cdn.tuk.dev/assets/components/misc/doge-coin.png"
-                        alt
-                        className="w-12 h-12 rounded-full"
-                      /> */}
+                      <GrGroup className="text-3xl" />
                       <div className="flex items-start justify-between w-full">
                         <div className="pl-3 w-full">
                           <p className="text-xl font-medium leading-5 text-gray-800">
@@ -173,6 +176,9 @@ console.log(user?.groups)
                           <p className="text-sm leading-normal pt-2 text-gray-500">
                             {group?.members?.length}
                           </p>
+                        </div>
+                        <div className='flex font-semibold'>
+                         Total Amount : {group.total_amount}
                         </div>
                         <svg
                           width={28}
@@ -192,19 +198,40 @@ console.log(user?.groups)
                       </div>
                     </div>
                     <div className="px-2">
-                      <p className="text-sm leading-5 py-4 text-gray-600">
-                        A group of people interested in dogecoin, the currency
-                        and a bit of side for the meme and dof that we all know
-                        and love. These cases are perfectly simple and easy to
-                        distinguish.
-                      </p>
+                      <div class="">
+                        <table class="w-full text-sm text-left text-gray-500 ">
+                          <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                            <tr>
+                              <th scope="col" class="px-6 py-3 rounded-l-lg">
+                                Member name
+                              </th>
+                              <th scope="col" class="px-6 py-3">
+                                Email Id
+                              </th>
+                              <th scope="col" class="px-6 py-3 rounded-r-lg">
+                                Amount Pay (Shared)
+                              </th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {group.members.map((member, index) => (
+                              <tr key={index} class="bg-white ">
+                                <th
+                                  scope="row"
+                                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                                >
+                                  {member.membername}
+                                </th>
+                                <td class="px-6 py-4">{member.memberemail}</td>
+                                <td class="px-6 py-4">{group.each_payee} </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                       <div className="flex">
-                        <div className="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">
-                          #dogecoin
-                        </div>
-                        <div className="py-2 px-4 ml-3 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">
-                          #crypto
-                        </div>
+                      
                       </div>
                     </div>
                   </div>
@@ -220,117 +247,7 @@ console.log(user?.groups)
           <NewGroupModal handleclick={handleclick} id={id} />
         </div>
       )}
-      {addfriend && (
-        <div className="flex items-center justify-center">
-          <div
-            class="modal fade fixed top-0 left-1/3   w-1/2 h-full outline-none overflow-x-hidden overflow-y-auto"
-            id="exampleModal"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog relative w-auto pointer-events-none">
-              <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-gray-800 bg-clip-padding rounded-md outline-none text-white">
-                <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-800 rounded-t-md">
-                  <h5
-                    class="text-xl font-medium leading-normal text-white"
-                    id="exampleModalLabel"
-                  >
-                    Add A Friend
-                  </h5>
-
-                  <button
-                    onClick={() => setAddFriend(false)}
-                    type="button"
-                    class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body relative p-4">
-                  <div className="flex flex-col items-center justify-center">
-                    <Image
-                      height={400}
-                      width={400}
-                      alt="gello"
-                      className="flex items-center justify-center"
-                      src={logo}
-                    />
-                    <div class="mb-6 flex flex-row ">
-                      <label
-                        for="large-input"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        {" "}
-                        Friend Code
-                      </label>
-                      <input
-                        value={code}
-                        onChange={(e) => {
-                          setCode(e.target.value);
-                        }}
-                        type="text"
-                        id="large-input"
-                        class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-                  <button
-                    type="button"
-                    class="px-6
-          py-2.5
-          bg-purple-600
-          text-white
-          font-medium
-          text-xs
-          leading-tight
-          uppercase
-          rounded
-          shadow-md
-          hover:bg-purple-700 hover:shadow-lg
-          focus:bg-purple-700 focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-purple-800 active:shadow-lg
-          transition
-          duration-150
-          ease-in-out"
-                    data-bs-dismiss="modal"
-                    onClick={() => setAddFriend(false)}
-                  >
-                    Close
-                  </button>
-                  <button
-                    onClick={() => {
-                      addTodoHandler();
-                    }}
-                    type="button"
-                    class="px-6
-      py-2.5
-      bg-blue-600
-      text-white
-      font-medium
-      text-xs
-      leading-tight
-      uppercase
-      rounded
-      shadow-md
-      hover:bg-blue-700 hover:shadow-lg
-      focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-      active:bg-blue-800 active:shadow-lg
-      transition
-      duration-150
-      ease-in-out
-      ml-1"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {addfriend && <AddFriendModal setAddFriend={setAddFriend} />}
     </div>
   );
 }

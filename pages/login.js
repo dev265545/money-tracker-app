@@ -30,14 +30,14 @@ if (user != null) {
 //   );
 // }
   return (
-    <>
+    <div className="flex items-center justify-center mt-32">
       <button
         className=" border  border-solid border-purple-100 bg-purple-200 opacity-70 00 rounded-full   w-64 h-64 "
         onClick={() => signIn("google", { callbackUrl: "/Dashboard" })}
       >
-        <p className="font-extrabold text-4xl opacity-100 ">Doctor</p>
+        <p className="font-extrabold text-4xl opacity-100 ">Login</p>
       </button>
-    </>
+    </div>
   );
 }
 

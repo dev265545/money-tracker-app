@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-function Modal({handleclick,id}) {
+function Modal({handleclick,id,gettransaction}) {
 const today = new Date()
 
 const [user, setUser] = useState();
@@ -90,8 +90,12 @@ useEffect(() => {
           )
           .then(function (response) {
             console.log(response);
+            
+           setTimeout(gettransaction(), 1000);
+           
+           setTimeout(gettransaction(), 1000);
           });
-
+        
           handleclick()
     }
   return (
